@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лестница звёзд · школа астрологии (демо)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B1020;--bg2:#121A2E;--card:#151E34;--line:#2A3552;--text:#ECE7DC;--muted:#A9B0C3;
+  --gold:#D4B26A;--lav:#8E86C9;--good:#7FB89A;--warn:#E0A458;--bad:#D9776B;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.55 Manrope,system-ui,sans-serif;
+  background-image:radial-gradient(1px 1px at 12% 18%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 72% 9%,#fff5 50%,transparent 51%),
+  radial-gradient(1px 1px at 38% 62%,#fff4 50%,transparent 51%),radial-gradient(1px 1px at 88% 44%,#fff5 50%,transparent 51%),
+  radial-gradient(1px 1px at 22% 88%,#fff3 50%,transparent 51%),radial-gradient(1px 1px at 58% 32%,#fff3 50%,transparent 51%);
+  background-attachment:fixed}
+a{color:var(--gold)}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(34px,8vw,56px)}h2{font-size:clamp(28px,6vw,38px)}h3{font-size:22px}
+p{margin:0 0 .8em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.demo-bar{background:#8E86C933;color:var(--text);font-size:13px;text-align:center;padding:6px 16px}
+header{position:sticky;top:0;z-index:5;background:#0B1020ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;max-width:1080px;margin:0 auto}
+.logo{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:600;color:var(--gold);text-decoration:none;line-height:1}
+.logo small{display:block;font-family:Manrope;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
+nav{display:flex;gap:4px;overflow-x:auto;padding:0 16px 10px;max-width:1080px;margin:0 auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:none;color:var(--muted);text-decoration:none;padding:8px 12px;border:1px solid var(--line);border-radius:999px;font-size:14px;min-height:38px;display:flex;align-items:center}
+nav a.on{color:#1a1406;background:var(--gold);border-color:var(--gold)}
+nav .sep{flex:none;width:1px;background:var(--line);margin:4px 6px}
+section.screen{display:none;padding:28px 0 48px}
+section.screen.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid{display:grid;gap:14px}
+@media(min-width:760px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:12px;border:1px solid var(--gold);
+  background:var(--gold);color:#1a1406;font:600 15px Manrope;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--gold)}
+.btn.sm{min-height:38px;padding:0 14px;font-size:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tag{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;border-radius:999px;background:#8E86C92e;color:#C9C3F0;border:1px solid #8E86C955;vertical-align:middle;white-space:nowrap;font-weight:500}
+.muted{color:var(--muted)}.small{font-size:13px}
+.kicker{color:var(--gold);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.hero{padding:26px 0 8px}
+.hero p{font-size:18px;color:var(--muted);max-width:640px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;min-height:46px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--text);font:16px Manrope;padding:0 12px}
+input[type=checkbox]{width:20px;min-height:20px;accent-color:var(--gold)}
+input[type=range]{padding:0;border:0;background:transparent;accent-color:var(--gold)}
+.fields{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.fields .full{grid-column:1/-1}
+.list{list-style:none;margin:0;padding:0}
+.drop{background:var(--bg2);border:1px solid var(--line);border-radius:10px;margin-top:6px;overflow:hidden}
+.drop button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--text);padding:10px 12px;font:15px Manrope;cursor:pointer;min-height:44px}
+.drop button:last-child{border-bottom:0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--muted);font-weight:500;font-size:13px}
+.sym{font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols",serif;color:var(--gold)}
+/* лестница */
+.ladder{counter-reset:s}
+.step{position:relative;padding:16px 16px 16px 58px;border-left:1px solid var(--line);margin-left:20px}
+.step:before{counter-increment:s;content:counter(s);position:absolute;left:-20px;top:14px;width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond";font-size:22px}
+.step h3{margin-bottom:4px}
+.step .who{display:grid;gap:6px;margin-top:10px;font-size:14px}
+.who div{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.who b{color:var(--gold);font-weight:600}
+/* калькулятор */
+.big{font-family:"Cormorant Garamond";font-size:34px;font-weight:600;line-height:1.1}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat .muted{font-size:13px}
+.bar{height:26px;border-radius:8px;background:var(--bg2);border:1px solid var(--line);position:relative;overflow:hidden;margin:4px 0 10px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:#D4B26A55}
+.bar em{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,#8E86C977 0 6px,#8E86C933 6px 12px)}
+.bar span{position:relative;font-size:13px;padding-left:8px;line-height:24px}
+.presets button{background:var(--bg2);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font:14px Manrope;cursor:pointer;min-height:40px}
+.presets button:hover{border-color:var(--gold)}
+.hint{border-left:3px solid var(--warn);padding:8px 12px;background:#E0A45814;border-radius:6px;font-size:14px;margin-top:10px}
+/* чат */
+.chat{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;padding:4px}
+.msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:15px}
+.msg.me{align-self:flex-end;background:#D4B26A26;border:1px solid #D4B26A55}
+.msg.ai{align-self:flex-start;background:var(--bg2);border:1px solid var(--line)}
+.qbtn{background:transparent;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:8px 12px;font:14px Manrope;cursor:pointer;min-height:40px;text-align:left}
+.qbtn:hover{border-color:var(--gold)}
+.video{aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#1c2644,#0f1628);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:12px}
+.ok{color:var(--good)}.bad{color:var(--bad)}.warnc{color:var(--warn)}
+.ava{width:48px;height:48px;border-radius:50%;background:var(--bg2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond";font-size:20px;color:var(--gold);flex:none}
+.pill{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin:2px 4px 2px 0}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+#wheel svg{width:100%;max-width:440px;display:block;margin:0 auto}
+.lang button{background:none;border:1px solid var(--line);color:var(--muted);padding:6px 10px;border-radius:8px;font:600 13px Manrope;cursor:pointer;min-height:36px}
+.lang button.on{border-color:var(--gold);color:var(--gold)}
+.interp p{font-size:15px}
+.num{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="demo-bar">Демо-версия: цифры, люди и ответы условные. Настоящие здесь только расчёт карты и калькулятор.</div>
+<header>
+  <div class="head">
+    <a class="logo" href="#/">Лестница звёзд<small>рабочее название · школа астрологии</small></a>
+  </div>
+  <nav id="nav">
+    <a href="#/">Главная</a>
+    <a href="#/karta">Бесплатная карта</a>
+    <a href="#/put">Путь обучения</a>
+    <a href="#/kabinet">Кабинет ученика</a>
+    <a href="#/katalog">Астрологи школы</a>
+    <span class="sep"></span>
+    <a href="#/model">Модель для автора</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+<!-- ГЛАВНАЯ -->
+<section class="screen" id="s-home">
+  <div class="hero">
+    <div class="kicker">Школа астрологии для всего мира</div>
+    <h1>Глубокая астрология.<br>Учиться можно из любой страны.</h1>
+    <p>Начните с бесплатной натальной карты с толкованием по методике школы. Дальше поднимайтесь по ступеням: живые разборы автора, экзамен, сертификат, а потом и право вести свои группы.</p>
+    <div class="row" style="margin-top:18px">
+      <a class="btn" href="#/karta">Рассчитать свою карту</a>
+      <a class="btn ghost" href="#/model">Как это работает для автора</a>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:28px">
+    <div class="card"><div class="kicker">Ученику</div><h3>Понятный путь</h3><p class="muted">Бесплатная карта, мини-курс на 7 дней, затем 4 ступени с живыми разборами и сертификат школы.</p><a href="#/put">Путь обучения →</a></div>
+    <div class="card"><div class="kicker">Автору</div><h3>Около 10 часов в неделю</h3><p class="muted">Вы учите и разбираете карты. Продажи, вопросы, оплату и расписание берёт на себя система.</p><a href="#/model">Модель и калькулятор →</a></div>
+    <div class="card"><div class="kicker">Миру</div><h3>Наставники на своих языках</h3><p class="muted">Лучшие выпускники ведут младшие ступени по вашей программе в своих странах. Экзамены принимаете вы.</p><a href="#/katalog">Астрологи школы →</a></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="kicker">Показать за 5 минут</div>
+    <p class="muted" style="margin:0">Порядок просмотра: <a href="#/model">Модель</a> → <a href="#/karta">Бесплатная карта</a> → <a href="#/put">Путь обучения</a> → <a href="#/kabinet">Кабинет ученика</a> → <a href="#/katalog">Астрологи школы</a>.</p>
+  </div>
+</section>
+
+<!-- МОДЕЛЬ -->
+<section class="screen" id="s-model">
+  <div class="kicker">Для автора школы</div>
+  <h2>Модель «Лестница мастера»</h2>
+  <div class="grid g3">
+    <div class="card"><h3>1. Вход бесплатный</h3><p class="muted" style="margin:0">Человек из любой страны получает свою натальную карту с толкованием по вашей методике и мини-курс на 7 дней.</p></div>
+    <div class="card"><h3>2. Система вместо продаж</h3><p class="muted" style="margin:0">ИИ-помощник отвечает только по вашим лекциям, куратор ведёт потоки, оплата и напоминания идут сами. У вас около 10 часов в неделю.</p></div>
+    <div class="card"><h3>3. Рост через учеников</h3><p class="muted" style="margin:0">Лучшие выпускники становятся наставниками и ведут младшие ступени на своих языках. Учеников больше, ваши часы почти не растут.</p></div>
+  </div>
+
+  <h3 style="margin-top:30px">Путь ученика и где здесь вы</h3>
+  <div class="ladder card">
+    <div class="step"><h3>Бесплатная карта</h3><div class="who"><div><b>Система:</b> расчёт карты, толкования из вашей библиотеки, любой язык</div><div><b>Вы:</b> один раз одобрили тексты</div></div></div>
+    <div class="step"><h3>Мини-курс «Читаю свою карту», 7 дней</h3><div class="who"><div><b>Система:</b> письма или бот, сами</div><div><b>Вы:</b> один раз записали</div></div></div>
+    <div class="step"><h3>«Вход», 4 недели <span class="tag">пример: 6 000 ₽</span></h3><div class="who"><div><b>Система:</b> записи, ИИ-помощник, куратор</div><div><b>Вы:</b> 1 живой разбор в месяц</div></div></div>
+    <div class="step"><h3>Ступени 1 → 2 → 3 <span class="tag">пример: 20 / 48 / 48 тыс. ₽</span></h3><div class="who"><div><b>Система:</b> потоки до 40 человек, домашние задания, первая проверка по чек-листу</div><div><b>Вы:</b> живой разбор раз в неделю на поток</div></div></div>
+    <div class="step"><h3>Экзамен и сертификат</h3><div class="who"><div><b>Система:</b> каталог астрологов школы, проверка сертификата по номеру</div><div><b>Вы:</b> принимаете экзамен</div></div></div>
+    <div class="step"><h3>Наставник школы</h3><div class="who"><div><b>Система:</b> программа, помощник, кабинет наставника</div><div><b>Вы:</b> готовите наставников и экзаменуете их учеников</div></div></div>
+  </div>
+
+  <h3 style="margin-top:30px">Калькулятор масштаба</h3>
+  <p class="muted">Двигайте ползунки: видно, сколько учеников, что остаётся школе и сколько часов в неделю уходит у вас. Все цифры условные <span class="tag">пример</span></p>
+  <div class="card">
+    <div class="row presets" style="margin-bottom:14px">
+      <button data-p="base">Пример из модели</button>
+      <button data-p="deep">Глубина: 50% идут дальше</button>
+      <button data-p="scale">Масштаб: 1 000 учеников, 70% у наставников</button>
+    </div>
+    <div class="grid g3">
+      <div><label>Новых учеников «Входа» в год: <b id="vN" class="num"></b></label><input type="range" id="N" min="20" max="3000" step="10"></div>
+      <div><label>Переходят на следующую ступень: <b id="vp"></b></label><input type="range" id="p" min="10" max="60" step="5"></div>
+      <div><label>Учатся у наставников (младшие ступени): <b id="vm"></b></label><input type="range" id="m" min="0" max="90" step="10"></div>
+    </div>
+    <div style="margin-top:14px" id="bars"></div>
+    <div class="grid g3" style="margin-top:6px">
+      <div class="stat"><div class="muted">Ваши часы в неделю</div><div class="big num" id="oH"></div></div>
+      <div class="stat"><div class="muted">Учеников в год</div><div class="big num" id="oS"></div></div>
+      <div class="stat"><div class="muted">Остаётся школе за год, до налогов</div><div class="big num" id="oP"></div></div>
+      <div class="stat"><div class="muted">Выручка школы</div><div class="big num" id="oR" style="font-size:26px"></div></div>
+      <div class="stat"><div class="muted">Расходы (команда, сервисы, реклама)</div><div class="big num" id="oC" style="font-size:26px"></div></div>
+      <div class="stat"><div class="muted">Заработают наставники</div><div class="big num" id="oM" style="font-size:26px"></div></div>
+    </div>
+    <div id="hints"></div>
+    <details style="margin-top:14px"><summary class="muted small" style="cursor:pointer">Как считается</summary>
+      <p class="small muted" style="margin-top:8px">Цены ступеней 6 000 / 20 000 / 48 000 / 48 000 ₽ (по образцу школы Дарагана). Школе 25% с групп наставников <span class="tag">гипотеза</span>. Поток до 40 человек. Постоянные расходы 990 000 ₽ в год (куратор, техподдержка, платформа, сервисы) плюс куратор на каждые следующие 300 учеников. Комиссия оплаты 5%, ИИ-помощник 185 ₽ на ученика в год, привлечение 3 000 ₽ на ученика «Входа» в группах школы. Часы: 3,5 ч базово, 1,5 ч на каждый поток ступеней 1 и 2, 1 ч на поток ступени 3, 1,5 ч на встречи с наставниками, экзамены по часу на человека.</p>
+    </details>
+  </div>
+
+  <h3 style="margin-top:30px">Так уже делают</h3>
+  <div class="grid g2">
+    <div class="card small"><b>Лестница из 3 курсов с сертификатом автора и представителями в других городах</b><br><span class="muted">Школа Константина Дарагана</span><br><a href="https://astrology-online.ru/filialy-shkoly/" target="_blank" rel="noopener">astrology-online.ru</a></div>
+    <div class="card small"><b>Каталог сертифицированных астрологов школы с ежегодной проверкой</b><br><span class="muted">Debra Silverman Astrology, 5 стран</span><br><a href="https://debrasilvermanastrology.com/certified-astrologers/" target="_blank" rel="noopener">debrasilvermanastrology.com</a></div>
+    <div class="card small"><b>Бесплатная карта как вход в платное</b><br><span class="muted">Приложение CHANI, около $14 млн выручки в год</span><br><a href="https://www.builtbyfoundry.io/blog/chani-nicholas-chani-astrology-app" target="_blank" rel="noopener">builtbyfoundry.io</a></div>
+    <div class="card small"><b>Учиться у живого преподавателя доходят до конца 70–90%, курс в записи 5–15%</b><br><span class="muted">Поэтому ступени идут потоками, а не записями</span><br><a href="https://maven.com/resources/a16z-cohorts-are-king" target="_blank" rel="noopener">maven.com</a></div>
+  </div>
+
+  <h3 style="margin-top:30px">Этапы</h3>
+  <div class="grid g3">
+    <div class="card"><div class="kicker">0–3 месяца</div><p class="small">Сайт с бесплатной картой, мини-курс, ИИ-помощник на одном вашем курсе, оплата, «Вход» и ступень 1.</p><p class="small muted" style="margin:0">Успех: 1 500 человек с картой, 20 покупок «Входа», у вас не больше 12 часов в неделю.</p></div>
+    <div class="card"><div class="kicker">3–12 месяцев</div><p class="small">Потоки 3 раза в год, русскоязычные по всему миру, первые сертификаты и каталог, 2–3 наставника на пилоте.</p><p class="small muted" style="margin:0">Успех: 80–100 учеников «Входа», 70% доходят до конца ступени 1.</p></div>
+    <div class="card"><div class="kicker">12–24 месяца</div><p class="small">Английская версия: записи вашим голосом через ИИ-озвучку, группы ведут двуязычные наставники.</p><p class="small muted" style="margin:0">Успех: 5+ наставников, 2+ языка, 3+ страны.</p></div>
+  </div>
+</section>
+
+<!-- КАРТА -->
+<section class="screen" id="s-karta">
+  <div class="row" style="justify-content:space-between">
+    <div class="kicker" data-t="k_kicker">Бесплатно</div>
+    <div class="lang row" style="gap:6px"><span class="small muted" data-t="k_langhint">Так карту видит ученик из любой страны:</span><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+  </div>
+  <h2 data-t="k_title">Ваша натальная карта</h2>
+  <p class="muted" data-t="k_lead">Точный расчёт положения планет в момент вашего рождения и первые толкования по методике школы.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="card">
+      <div class="fields">
+        <div><label data-t="k_date">Дата рождения</label><input type="date" id="bDate" value="1990-07-15"></div>
+        <div><label data-t="k_time">Время</label><input type="time" id="bTime" value="14:30"></div>
+        <div class="full row" style="gap:8px"><input type="checkbox" id="bNoTime"><label for="bNoTime" style="margin:0;color:var(--text)" data-t="k_notime">Не знаю время рождения</label></div>
+        <div class="full"><label data-t="k_city">Город рождения</label><input id="bCity" autocomplete="off" placeholder="Москва" value="Москва"><div id="cityDrop"></div><div class="small muted" id="cityPicked" style="margin-top:6px"></div></div>
+        <details class="full"><summary class="small muted" style="cursor:pointer" data-t="k_manual">Ввести координаты вручную</summary>
+          <div class="fields" style="margin-top:10px">
+            <div><label data-t="k_lat">Широта</label><input id="mLat" inputmode="decimal" placeholder="55.75"></div>
+            <div><label data-t="k_lon">Долгота</label><input id="mLon" inputmode="decimal" placeholder="37.62"></div>
+            <div class="full"><label data-t="k_tz">Часовой пояс (часы от Гринвича)</label><input id="mTz" inputmode="decimal" placeholder="3"></div>
+          </div>
+        </details>
+        <div class="full"><button class="btn" id="calcBtn" style="width:100%" data-t="k_btn">Рассчитать карту</button></div>
+      </div>
+      <p class="small muted" style="margin:12px 0 0" data-t="k_privacy">Расчёт идёт в вашем браузере, данные никуда не отправляются.</p>
+    </div>
+    <div class="card" id="wheelCard"><div id="wheel"></div><p class="small muted" id="wheelNote" style="text-align:center;margin:8px 0 0"></p></div>
+  </div>
+  <div id="chartOut" style="margin-top:14px"></div>
+</section>
+
+<!-- ПУТЬ -->
+<section class="screen" id="s-put">
+  <div class="kicker">Путь обучения</div>
+  <h2>От первой карты до своих учеников</h2>
+  <p class="muted">Каждая следующая ступень открывается после предыдущей. Цены условные <span class="tag">пример</span></p>
+  <div class="ladder card">
+    <div class="step"><h3>Бесплатная карта и мини-курс</h3><p class="muted small">Своя карта с толкованием и 7 коротких уроков «Читаю свою карту». Бесплатно.</p></div>
+    <div class="step"><h3>«Вход» · 4 недели · 6 000 ₽</h3><p class="muted small">Язык астрологии: планеты, знаки, дома, аспекты на своей карте. Записи, помощник, один живой разбор автора в месяц.</p></div>
+    <div class="step"><h3>Ступень 1 · 4 месяца · 20 000 ₽</h3><p class="muted small">Чтение натальной карты целиком. Поток до 40 человек, живой разбор раз в неделю, домашние задания с проверкой. Оплата помесячно.</p></div>
+    <div class="step"><h3>Ступень 2 · 8 месяцев · 48 000 ₽</h3><p class="muted small">Прогностика: транзиты, дирекции, соляры. Разбор реальных карт учеников.</p></div>
+    <div class="step"><h3>Ступень 3 · 8 месяцев · 48 000 ₽</h3><p class="muted small">Консультация: как вести разговор с человеком. Разбор ваших консультаций с автором.</p></div>
+    <div class="step"><h3>Экзамен у автора и сертификат</h3><p class="muted small">Номер сертификата можно проверить на сайте, место в каталоге астрологов школы.</p></div>
+    <div class="step"><h3>Наставник школы</h3><p class="muted small">Подготовка у автора, пилотная группа, экзамен её выпускников. Потом право вести «Вход» и ступень 1 на своём языке.</p></div>
+  </div>
+  <div class="row" style="margin-top:16px"><a class="btn" href="#/kabinet">Заглянуть в кабинет ученика</a></div>
+</section>
+
+<!-- КАБИНЕТ -->
+<section class="screen" id="s-kabinet">
+  <div class="kicker">Кабинет ученика · Ступень 1 · Урок 5</div>
+  <h2>Знаки и дома: как читать связку</h2>
+  <div class="grid g2" style="align-items:start">
+    <div class="grid">
+      <div class="video"><div>▶︎ Видеоурок автора, 48 минут<br><span class="small">(в демо видео нет)</span></div></div>
+      <div class="card small">
+        <b>Конспект</b> <span class="tag">демо-текст</span>
+        <ul class="list" style="margin-top:8px">
+          <li><span class="muted num">03:10</span> Планета отвечает на вопрос «что», знак «как», дом «где, в какой сфере жизни».</li>
+          <li><span class="muted num">12:40</span> Один и тот же знак в разных домах: пример с Марсом в Овне в 1 и в 10 доме.</li>
+          <li><span class="muted num">27:05</span> Управитель дома: куда «уходит» тема дома.</li>
+          <li><span class="muted num">39:30</span> Как собрать три слова в одну фразу и не утонуть в деталях.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b>Домашнее задание</b>
+        <p class="small muted">Найдите управителя знака. Выберите знак и его традиционного управителя. Проверка сработает сразу, дальше работу смотрит наставник.</p>
+        <div class="fields">
+          <div><label>Знак</label><select id="hwSign"></select></div>
+          <div><label>Управитель</label><select id="hwRuler"></select></div>
+          <div class="full"><button class="btn sm" id="hwBtn">Проверить</button></div>
+        </div>
+        <div id="hwOut" class="small" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><b>ИИ-помощник школы</b><span class="tag">заготовленные ответы</span></div>
+      <p class="small muted">Отвечает только по лекциям автора и даёт ссылку на минуту урока. Сложные вопросы раз в неделю уходят автору.</p>
+      <div class="chat" id="chat"></div>
+      <div class="row" id="qs" style="margin:12px 0;gap:8px"></div>
+      <div class="row" style="flex-wrap:nowrap"><input id="chatIn" placeholder="Ваш вопрос"><button class="btn sm" id="chatBtn">→</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- КАТАЛОГ -->
+<section class="screen" id="s-katalog">
+  <div class="kicker">Астрологи школы</div>
+  <h2>Сертифицированные выпускники и наставники</h2>
+  <p class="muted">Все люди на этой странице вымышленные <span class="tag">вымышленный пример</span></p>
+  <div class="card" style="margin-bottom:14px">
+    <b>Проверить сертификат</b>
+    <p class="small muted">Попробуйте: SL-2026-014, SL-2024-003 или любой другой номер.</p>
+    <div class="row" style="flex-wrap:nowrap"><input id="certIn" placeholder="SL-2026-014"><button class="btn sm" id="certBtn">Проверить</button></div>
+    <div id="certOut" class="small" style="margin-top:10px"></div>
+  </div>
+  <div class="row presets" id="langF" style="margin-bottom:12px"></div>
+  <div class="grid g2" id="cat"></div>
+</section>
+
+</main>
+<footer><div class="wrap">Демо-версия школы «Лестница звёзд» (рабочее название). Обучение астрологии как языку самопознания: не прогноз, не медицинская, психологическая или финансовая рекомендация. Расчёт карты: библиотека astronomy-engine (MIT), равные дома.</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<script src="js/astro-calc.js"></script>
+<script src="js/geo.js"></script>
+<script>
+(function(){
+var VS='︎';
+var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- маршруты ---------- */
+var screens=['home','model','karta','put','kabinet','katalog'];
+function route(){
+  var h=(location.hash||'#/').replace('#/','')||'home';
+  if(screens.indexOf(h)<0)h='home';
+  $$('section.screen').forEach(function(s){s.classList.toggle('on',s.id==='s-'+h)});
+  $$('#nav a').forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#/'+(h==='home'?'':h))});
+  var on=$('#nav a.on'); if(on&&on.scrollIntoView)on.scrollIntoView({inline:'center',block:'nearest'});
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- калькулятор (формулы ТЗ 5.2) ---------- */
+var P=[6000,20000,48000,48000];
+function calc(N,p,m){
+  var S0=N,S1=Math.round(S0*p),S2=Math.round(S1*p),S3=Math.round(S2*p);
+  var M0=Math.round(S0*m),M1=Math.round(S1*m),M2=Math.round(S2*m);
+  var O0=S0-M0,O1=S1-M1,O2=S2-M2,O3=S3;
+  var mentorGross=M0*P[0]+M1*P[1]+M2*P[2];
+  var rev=O0*P[0]+O1*P[1]+O2*P[2]+O3*P[3]+0.25*mentorGross;
+  var all=S0+S1+S2+S3, school=O0+O1+O2+O3;
+  var cost=990000+480000*Math.max(0,Math.ceil(school/300)-1)+0.05*rev+185*all+3000*O0;
+  var hours=3.5+(O0>0?0.5:0)+1.5*Math.ceil(O1/40)+1.5*Math.ceil(O2/40)+1*Math.ceil(O3/40)+(M0+M1+M2>0?1.5:0)+S3/46;
+  return {S:[S0,S1,S2,S3],M:[M0,M1,M2,0],rev:rev,cost:cost,profit:rev-cost,mentors:0.75*mentorGross,hours:hours,all:all};
+}
+window.__calc=calc;
+function rub(x){var v=Math.round(x/1000)*1000;return (v<0?'−':'')+Math.abs(v).toLocaleString('ru-RU')+' ₽'}
+function drawCalc(){
+  var N=+$('#N').value,p=+$('#p').value/100,m=+$('#m').value/100,r=calc(N,p,m);
+  $('#vN').textContent=N.toLocaleString('ru-RU');$('#vp').textContent=Math.round(p*100)+'%';$('#vm').textContent=Math.round(m*100)+'%';
+  var names=['«Вход»','Ступень 1','Ступень 2','Ступень 3'],mx=Math.max(r.S[0],1),h='';
+  for(var i=0;i<4;i++){var w=r.S[i]/mx*100,mw=r.M[i]/mx*100;
+    h+='<div class="small">'+names[i]+': <b class="num">'+r.S[i]+'</b>'+(r.M[i]?' <span class="muted">(у наставников '+r.M[i]+')</span>':'')+'</div><div class="bar"><i style="width:'+w+'%"></i><em style="left:'+(w-mw)+'%;width:'+mw+'%"></em></div>';}
+  $('#bars').innerHTML=h;
+  $('#oH').textContent=r.hours.toFixed(1).replace('.',',');
+  $('#oH').style.color=r.hours>15?'var(--bad)':'var(--gold)';
+  $('#oS').textContent=r.all.toLocaleString('ru-RU');
+  $('#oP').textContent=rub(r.profit);$('#oP').style.color=r.profit<0?'var(--bad)':'var(--good)';
+  $('#oR').textContent=rub(r.rev);$('#oC').textContent=rub(r.cost);$('#oM').textContent=rub(r.mentors);
+  var base=calc(120,0.3,0.2),hs='';
+  if(N!==120){hs+='<div class="hint" style="border-color:var(--lav);background:#8E86C914">Учеников в '+(r.all/base.all).toFixed(1).replace('.',',')+' раза больше, чем в примере, а ваших часов '+(r.hours>=base.hours?'больше на ':'меньше на ')+Math.abs(r.hours-base.hours).toFixed(1).replace('.',',')+'.</div>';}
+  if(r.hours>15)hs+='<div class="hint">Столько живых часов не удержать без потери глубины: передайте младшие ступени наставникам.</div>';
+  if(r.S[3]>40)hs+='<div class="hint">Ступень 3 и экзамены растут вместе с учениками: на таком масштабе часть экзаменов принимают старшие наставники.</div>';
+  $('#hints').innerHTML=hs;
+}
+function preset(k){var v={base:[120,30,20],deep:[120,50,20],scale:[1000,30,70]}[k];$('#N').value=v[0];$('#p').value=v[1];$('#m').value=v[2];drawCalc();}
+['N','p','m'].forEach(function(id){$('#'+id).addEventListener('input',drawCalc)});
+$$('.presets button[data-p]').forEach(function(b){b.addEventListener('click',function(){preset(b.dataset.p)})});
+preset('base');
+
+/* ---------- карта: тексты ---------- */
+var L='ru';
+var T={
+ ru:{k_kicker:'Бесплатно',k_langhint:'Так карту видит ученик из любой страны:',k_title:'Ваша натальная карта',k_lead:'Точный расчёт положения планет в момент вашего рождения и первые толкования по методике школы.',k_date:'Дата рождения',k_time:'Время',k_notime:'Не знаю время рождения',k_city:'Город рождения',k_manual:'Ввести координаты вручную',k_lat:'Широта',k_lon:'Долгота',k_tz:'Часовой пояс (часы от Гринвича)',k_btn:'Рассчитать карту',k_privacy:'Расчёт идёт в вашем браузере, данные никуда не отправляются.',
+  planets:'Планеты',planet:'Планета',pos:'Положение',asc:'Асцендент',mc:'Середина неба (MC)',retro:'ретроградна',noTimeNote:'Без времени рождения асцендент, MC и дома не считаются: они меняются каждые пару часов.',interp:'Первое толкование',demo:'демо-текст',
+  sun:'Солнце',moon:'Луна',ascN:'Асцендент',elem:'Стихия',cross:'Крест',ruler:'Управитель',
+  mcTitle:'Мини-курс «Читаю свою карту»: 7 дней, бесплатно',mcBtn:'Записаться на мини-курс',mcSent:'В демо запись не отправляется. В рабочей версии первый урок придёт на почту или в бот.',email:'Почта',
+  searching:'Ищу город…',notFound:'Город не найден. Введите координаты вручную ниже.',netErr:'Нет связи с поиском города. Введите координаты вручную.',picked:'Выбрано',needCity:'Выберите город из списка или введите координаты.',houses:'равные дома',wheelNote:'Асцендент слева, как принято в астрологии',
+  sunT:'Солнце {s}: ваша суть и воля раскрываются через {t}.',moonT:'Луна {s}: чувство опоры и покоя приходит через {t}.',ascT:'Асцендент {s}: мир впервые видит вас через {t}.',
+  lvl:'На ступени 1 разбираем: как {p} связано с управителем знака и домом, где оно стоит.'},
+ en:{k_kicker:'Free',k_langhint:'This is how a student from any country sees it:',k_title:'Your birth chart',k_lead:'An exact calculation of the planets at the moment of your birth, with first readings in the school’s method.',k_date:'Date of birth',k_time:'Time',k_notime:'I don’t know my birth time',k_city:'City of birth',k_manual:'Enter coordinates manually',k_lat:'Latitude',k_lon:'Longitude',k_tz:'Time zone (hours from UTC)',k_btn:'Calculate my chart',k_privacy:'The calculation runs in your browser. Your data is not sent anywhere.',
+  planets:'Planets',planet:'Planet',pos:'Position',asc:'Ascendant',mc:'Midheaven (MC)',retro:'retrograde',noTimeNote:'Without a birth time the Ascendant, MC and houses can’t be calculated: they change every couple of hours.',interp:'First reading',demo:'demo text',
+  sun:'Sun',moon:'Moon',ascN:'Ascendant',elem:'Element',cross:'Modality',ruler:'Ruler',
+  mcTitle:'Mini-course “Reading my chart”: 7 days, free',mcBtn:'Join the mini-course',mcSent:'In the demo nothing is sent. In the real version lesson one arrives by email or messenger.',email:'Email',
+  searching:'Searching…',notFound:'City not found. Enter coordinates manually below.',netErr:'City search is offline. Enter coordinates manually.',picked:'Selected',needCity:'Pick a city from the list or enter coordinates.',houses:'equal houses',wheelNote:'Ascendant on the left, as is customary in astrology',
+  sunT:'Sun {s}: your core self and will unfold through {t}.',moonT:'Moon {s}: a sense of safety and calm comes through {t}.',ascT:'Ascendant {s}: the world first meets you through {t}.',
+  lvl:'In Level 1 we explore how your {p} links to its sign ruler and the house it sits in.'}
+};
+var SIGN_IN_RU=['в Овне','в Тельце','в Близнецах','в Раке','во Льве','в Деве','в Весах','в Скорпионе','в Стрельце','в Козероге','в Водолее','в Рыбах'];
+var THEME={
+ ru:['смелость, прямоту и умение начинать первым','постоянство, телесность и умение ценить простое','любопытство, слово и лёгкость связей','заботу, память и чувство дома','творчество, щедрость и желание светить другим','точность, пользу и внимание к деталям','гармонию, партнёрство и чувство меры','глубину, верность и способность к перерождению','поиск смысла, свободу и широкий взгляд','ответственность, терпение и долгую цель','независимость, идеи будущего и дружбу','сочувствие, воображение и тонкое чутьё'],
+ en:['courage, directness and the drive to begin','steadiness, the senses and valuing what is simple','curiosity, words and easy connection','care, memory and a sense of home','creativity, generosity and the wish to shine for others','precision, usefulness and attention to detail','harmony, partnership and a sense of balance','depth, loyalty and the capacity for renewal','the search for meaning, freedom and a wide view','responsibility, patience and long-term goals','independence, ideas of the future and friendship','compassion, imagination and subtle intuition']};
+var ELEM={ru:['Огонь','Земля','Воздух','Вода'],en:['Fire','Earth','Air','Water']};
+var CROSS={ru:['кардинальный','фиксированный','мутабельный'],en:['cardinal','fixed','mutable']};
+var RULER_RU=['Марс','Венера','Меркурий','Луна','Солнце','Меркурий','Венера','Марс (совр. Плутон)','Юпитер','Сатурн','Сатурн (совр. Уран)','Юпитер (совр. Нептун)'];
+var RULER_EN=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars (modern: Pluto)','Jupiter','Saturn','Saturn (modern: Uranus)','Jupiter (modern: Neptune)'];
+var MC_DAYS={ru:['Что такое натальная карта и как её читать','Солнце: ваша суть','Луна: ваши чувства и опора','Асцендент: как вы входите в мир','Стихии: огонь, земля, воздух, вода','Дома: 12 сфер жизни','Собираем портрет из трёх точек'],
+ en:['What a birth chart is and how to read it','The Sun: your core','The Moon: feelings and inner support','The Ascendant: how you enter the world','Elements: fire, earth, air, water','Houses: twelve areas of life','Putting a portrait together from three points']};
+function t(k){return T[L][k]||k}
+function signName(i){return AstroCalc.SIGNS[i][L]}
+function signSym(i){return '<span class="sym">'+AstroCalc.SIGNS[i].symbol+VS+'</span>'}
+function sIn(i){return L==='ru'?SIGN_IN_RU[i]:'in '+AstroCalc.SIGNS[i].en}
+function fmt(pt){return pt.degree+'°'+String(pt.minute).padStart(2,'0')+'′ '+signSym(pt.sign.index)+' '+signName(pt.sign.index)}
+function setLang(l){L=l;$$('#s-karta [data-t]').forEach(function(el){el.textContent=t(el.dataset.t)});$$('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l)});if(lastChart)renderChart();}
+$$('.lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.l)})});
+
+/* ---------- поиск города ---------- */
+var city={name:'Москва, Россия',latitude:55.75222,longitude:37.61556,timezone:'Europe/Moscow'};
+$('#cityPicked').textContent=t('picked')+': '+city.name;
+var timer=null;
+$('#bCity').addEventListener('input',function(){
+  clearTimeout(timer);var q=this.value.trim();city=null;$('#cityPicked').textContent='';
+  if(q.length<2){$('#cityDrop').innerHTML='';return}
+  timer=setTimeout(function(){
+    $('#cityDrop').innerHTML='<div class="small muted" style="padding:8px 0">'+t('searching')+'</div>';
+    AstroGeo.search(q,L).then(function(list){
+      if(!list.length){$('#cityDrop').innerHTML='<div class="small warnc" style="padding:8px 0">'+t('notFound')+'</div>';return}
+      $('#cityDrop').innerHTML='<div class="drop">'+list.map(function(c,i){return '<button data-i="'+i+'">'+esc(c.name)+'<span class="muted small">'+esc([c.admin1,c.country].filter(Boolean).join(', '))+'</span></button>'}).join('')+'</div>';
+      $$('#cityDrop button').forEach(function(b){b.addEventListener('click',function(){var c=list[+b.dataset.i];city=c;$('#bCity').value=c.name;$('#cityDrop').innerHTML='';$('#cityPicked').textContent=t('picked')+': '+[c.name,c.admin1,c.country].filter(Boolean).join(', ')+' · '+c.timezone})});
+    }).catch(function(){$('#cityDrop').innerHTML='<div class="small warnc" style="padding:8px 0">'+t('netErr')+'</div>'});
+  },350);
+});
+
+/* ---------- круг карты ---------- */
+function wheel(ch,noTime){
+  var S=400,c=S/2,R1=190,R2=158,R3=112,asc=noTime?0:ch.ascendant.longitude;
+  function pt(lon,r){var a=(180+lon-asc)*Math.PI/180;return [c+r*Math.cos(a),c-r*Math.sin(a)]}
+  var g='<svg viewBox="0 0 '+S+' '+S+'" xmlns="http://www.w3.org/2000/svg" font-family="Manrope">';
+  g+='<circle cx="'+c+'" cy="'+c+'" r="'+R1+'" fill="#121A2E" stroke="#2A3552"/><circle cx="'+c+'" cy="'+c+'" r="'+R2+'" fill="#0B1020" stroke="#2A3552"/><circle cx="'+c+'" cy="'+c+'" r="'+(R3-14)+'" fill="none" stroke="#2A3552"/>';
+  var cols=['#D9776B','#7FB89A','#A9B0C3','#8E86C9'];
+  for(var i=0;i<12;i++){var a=pt(i*30,R1),b=pt(i*30,R2),m=pt(i*30+15,(R1+R2)/2);
+    g+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#2A3552"/>';
+    g+='<text x="'+m[0]+'" y="'+m[1]+'" fill="'+cols[i%4]+'" font-size="18" text-anchor="middle" dominant-baseline="central" font-family="Apple Symbols,Segoe UI Symbol,serif">'+AstroCalc.SIGNS[i].symbol+VS+'</text>';}
+  if(!noTime){
+    ch.houses.forEach(function(h,i){var a=pt(h.longitude,R2),b=pt(h.longitude,R3-14),n=pt(h.longitude+15,R3-26);
+      g+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+(i%3===0?'#D4B26A':'#2A3552')+'" stroke-width="'+(i%3===0?1.4:1)+'"/>';
+      g+='<text x="'+n[0]+'" y="'+n[1]+'" fill="#6f7894" font-size="10" text-anchor="middle" dominant-baseline="central">'+(i+1)+'</text>';});
+    var a1=pt(asc,R1+2),a2=pt(ch.mc.longitude,R1+2);
+    g+='<text x="'+(a1[0]-4)+'" y="'+(a1[1]-8)+'" fill="#D4B26A" font-size="11" text-anchor="end">ASC</text>';
+    g+='<text x="'+a2[0]+'" y="'+(a2[1]-6)+'" fill="#D4B26A" font-size="11" text-anchor="middle">MC</text>';
+  }
+  var ps=AstroCalc.PLANETS.map(function(p){return {p:p,lon:ch.planets[p.key].longitude}}).sort(function(x,y){return x.lon-y.lon});
+  var prev=-99,lvl=0;
+  ps.forEach(function(o){ if(o.lon-prev<8){lvl=(lvl+1)%3}else{lvl=0} prev=o.lon;
+    var r=R2-20-lvl*20,q=pt(o.lon,r),tk=pt(o.lon,R2),tk2=pt(o.lon,R2-6);
+    g+='<line x1="'+tk[0]+'" y1="'+tk[1]+'" x2="'+tk2[0]+'" y2="'+tk2[1]+'" stroke="#ECE7DC"/>';
+    g+='<text x="'+q[0]+'" y="'+q[1]+'" fill="#ECE7DC" font-size="17" text-anchor="middle" dominant-baseline="central" font-family="Apple Symbols,Segoe UI Symbol,serif">'+o.p.symbol+VS+'</text>';});
+  return g+'</svg>';
+}
+
+/* ---------- расчёт ---------- */
+var lastChart=null,lastNoTime=false;
+function num(v){v=String(v).replace(',','.').trim();return v===''?NaN:+v}
+function compute(){
+  var d=$('#bDate').value.split('-').map(Number),noTime=$('#bNoTime').checked,tm=noTime?[12,0]:($('#bTime').value||'12:00').split(':').map(Number);
+  var lat=num($('#mLat').value),lon=num($('#mLon').value),tz=num($('#mTz').value),utc;
+  if(!isNaN(lat)&&!isNaN(lon)&&!isNaN(tz)){utc=AstroCalc.localToUtcOffset(d[0],d[1],d[2],tm[0],tm[1],tz)}
+  else if(city){lat=city.latitude;lon=city.longitude;utc=AstroCalc.localToUtc(d[0],d[1],d[2],tm[0],tm[1],city.timezone)}
+  else{$('#chartOut').innerHTML='<div class="card warnc">'+t('needCity')+'</div>';return}
+  lastChart=AstroCalc.computeChart(utc,lat,lon);lastNoTime=noTime;renderChart();
+  if(window.innerWidth<760)$('#wheelCard').scrollIntoView({behavior:'smooth'});
+}
+function interpCard(key,idx,label){
+  var tpl=t(key+'T').replace('{s}',sIn(idx)).replace('{t}',THEME[L][idx]);
+  var el=ELEM[L][idx%4],cr=CROSS[L][idx%3],ru=(L==='ru'?RULER_RU:RULER_EN)[idx];
+  return '<div class="card interp"><div class="row" style="justify-content:space-between"><h3 style="margin:0">'+signSym(idx)+' '+label+'</h3><span class="tag">'+t('demo')+'</span></div>'+
+   '<p style="margin-top:10px">'+tpl+'</p><div style="margin-bottom:8px"><span class="pill">'+t('elem')+': '+el+'</span><span class="pill">'+t('cross')+': '+cr+'</span><span class="pill">'+t('ruler')+': '+ru+'</span></div>'+
+   '<p class="small muted" style="margin:0">'+t('lvl').replace('{p}',label.toLowerCase())+'</p></div>';
+}
+function renderChart(){
+  var ch=lastChart,noTime=lastNoTime;
+  $('#wheel').innerHTML=wheel(ch,noTime);$('#wheelNote').textContent=noTime?t('noTimeNote'):t('wheelNote')+' · '+t('houses');
+  var rows=AstroCalc.PLANETS.map(function(p){var o=ch.planets[p.key];return '<tr><td><span class="sym">'+p.symbol+VS+'</span> '+p[L]+'</td><td class="num">'+fmt(o)+(o.retrograde?' <span class="muted small">℞'+VS+' '+t('retro')+'</span>':'')+'</td></tr>'}).join('');
+  if(!noTime)rows+='<tr><td>'+t('asc')+'</td><td class="num">'+fmt(ch.ascendant)+'</td></tr><tr><td>'+t('mc')+'</td><td class="num">'+fmt(ch.mc)+'</td></tr>';
+  var ints=interpCard('sun',ch.planets.Sun.sign.index,t('sun'))+interpCard('moon',ch.planets.Moon.sign.index,t('moon'))+(noTime?'':interpCard('asc',ch.ascendant.sign.index,t('ascN')));
+  $('#chartOut').innerHTML='<div class="grid g2" style="align-items:start"><div class="card"><h3>'+t('planets')+'</h3><table>'+rows+'</table>'+(noTime?'<p class="small warnc" style="margin:10px 0 0">'+t('noTimeNote')+'</p>':'')+'</div>'+
+   '<div class="grid"><div class="kicker" style="margin:0">'+t('interp')+'</div>'+ints+'</div></div>'+
+   '<div class="card" style="margin-top:14px"><h3>'+t('mcTitle')+'</h3><ol class="small" style="padding-left:20px">'+MC_DAYS[L].map(function(d){return '<li>'+d+'</li>'}).join('')+'</ol>'+
+   '<div class="row" style="flex-wrap:nowrap"><input type="email" placeholder="'+t('email')+'" id="mcMail"><button class="btn sm" id="mcBtn">'+t('mcBtn')+'</button></div><div id="mcOut" class="small muted" style="margin-top:8px"></div></div>';
+  $('#mcBtn').addEventListener('click',function(){$('#mcOut').textContent=t('mcSent')});
+}
+$('#calcBtn').addEventListener('click',compute);
+
+/* ---------- кабинет: помощник ---------- */
+var QA=[
+ ['Чем знак отличается от дома?','Знак показывает, как проявляется планета, её стиль. Дом показывает, где, в какой сфере жизни. Марс в Овне действует быстро и прямо, а в 10 доме эта прямота уходит в карьеру и общественную роль.','Урок 5, 03:10'],
+ ['Что значит ретроградная планета?','С Земли кажется, что планета временно движется назад по зодиаку. В натальной карте в методике школы это не «плохо»: тема планеты проживается больше изнутри, через переосмысление.','Урок 7, 15:20'],
+ ['Почему без времени рождения нет асцендента?','Асцендент проходит все 12 знаков за сутки, то есть меняет знак в среднем каждые два часа, а вместе с ним меняются и дома. Без времени работаем со знаками планет и аспектами.','Урок 2, 22:45'],
+ ['Как понять, каких стихий в карте больше?','Посчитайте, сколько личных планет (Солнце, Луна, Меркурий, Венера, Марс) и асцендент стоят в огненных, земных, воздушных и водных знаках. Перевес стихии показывает основной способ жить, нехватка покажет, что даётся труднее.','Урок 3, 31:10']
+];
+function addMsg(txt,me,src){var d=document.createElement('div');d.className='msg '+(me?'me':'ai');d.innerHTML=esc(txt)+(src?'<div class="small muted" style="margin-top:6px">📖︎ '+esc(src)+' · <span class="tag">заготовленный ответ</span></div>':'');$('#chat').appendChild(d);$('#chat').scrollTop=1e6;}
+addMsg('Здравствуйте! Я помощник школы. Отвечаю по лекциям автора и показываю, в каком уроке об этом подробнее. Выберите вопрос ниже или напишите свой.',false);
+$('#qs').innerHTML=QA.map(function(q,i){return '<button class="qbtn" data-i="'+i+'">'+q[0]+'</button>'}).join('');
+function ask(i){addMsg(QA[i][0],true);setTimeout(function(){addMsg(QA[i][1],false,QA[i][2])},450)}
+$$('#qs .qbtn').forEach(function(b){b.addEventListener('click',function(){ask(+b.dataset.i)})});
+function free(){var q=$('#chatIn').value.trim();if(!q)return;$('#chatIn').value='';addMsg(q,true);
+  var low=q.toLowerCase(),hit=-1;[['знак','дом'],['ретро'],['врем','асцендент'],['стихи']].forEach(function(ws,i){if(hit<0&&ws.every(function(w){return low.indexOf(w)>=0}))hit=i});
+  setTimeout(function(){if(hit>=0)addMsg(QA[hit][1],false,QA[hit][2]);else addMsg('В демо помощник отвечает только на заготовленные вопросы. В рабочей версии он ответит по лекциям автора со ссылкой на минуту урока, а если вопрос сложный, передаст его автору на еженедельный разбор.',false)},450);}
+$('#chatBtn').addEventListener('click',free);$('#chatIn').addEventListener('keydown',function(e){if(e.key==='Enter')free()});
+
+/* ---------- домашнее задание ---------- */
+var TRAD=['Марс','Венера','Меркурий','Луна','Солнце','Меркурий','Венера','Марс','Юпитер','Сатурн','Сатурн','Юпитер'];
+$('#hwSign').innerHTML=AstroCalc.SIGNS.map(function(s,i){return '<option value="'+i+'">'+s.symbol+VS+' '+s.ru+'</option>'}).join('');
+$('#hwRuler').innerHTML=['Солнце','Луна','Меркурий','Венера','Марс','Юпитер','Сатурн'].map(function(r){return '<option>'+r+'</option>'}).join('');
+$('#hwBtn').addEventListener('click',function(){var i=+$('#hwSign').value,r=$('#hwRuler').value,ok=TRAD[i]===r;
+  $('#hwOut').innerHTML=ok?'<span class="ok">Верно.</span> У знака '+AstroCalc.SIGNS[i].ru+' традиционный управитель '+TRAD[i]+(RULER_RU[i].indexOf('совр')>0?', современный '+RULER_RU[i].split('совр. ')[1].replace(')',''):'')+'. Работа ушла наставнику.':'<span class="bad">Пока нет.</span> Подсказка: посмотрите таблицу управителей в конце урока, 27:05.';});
+
+/* ---------- каталог ---------- */
+var PEOPLE=[
+ {n:'Анна Вершинина',c:'Германия, Берлин',l:['русский','немецкий'],r:'Наставник школы',s:'Ступень 1'},
+ {n:'Лев Гарин',c:'Израиль, Хайфа',l:['русский','иврит'],r:'Сертифицированный астролог',s:'Ступень 3'},
+ {n:'Marta Solé',c:'Испания, Валенсия',l:['испанский','русский'],r:'Наставник школы',s:'«Вход»'},
+ {n:'Daniel Brooks',c:'США, Остин',l:['английский'],r:'Наставник школы',s:'«Вход», ступень 1'},
+ {n:'Айгерим Сапарова',c:'Казахстан, Алматы',l:['русский','казахский'],r:'Сертифицированный астролог',s:'Ступень 3'},
+ {n:'Ирина Тэн',c:'Таиланд, Пхукет',l:['русский','английский'],r:'Сертифицированный астролог',s:'Ступень 2'}
+];
+var langs=['все'].concat(PEOPLE.reduce(function(a,p){p.l.forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a},[]));
+var lf='все';
+function drawCat(){
+  $('#langF').innerHTML=langs.map(function(x){return '<button data-l="'+x+'" style="'+(x===lf?'border-color:var(--gold);color:var(--gold)':'')+'">'+x+'</button>'}).join('');
+  $$('#langF button').forEach(function(b){b.addEventListener('click',function(){lf=b.dataset.l;drawCat()})});
+  $('#cat').innerHTML=PEOPLE.filter(function(p){return lf==='все'||p.l.indexOf(lf)>=0}).map(function(p){var ini=p.n.split(' ').map(function(w){return w[0]}).join('');
+    return '<div class="card"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><div class="ava">'+ini+'</div><div><b>'+p.n+'</b> <span class="tag">вымышленный пример</span><div class="small muted">'+p.c+'</div><div class="small" style="margin-top:4px">'+p.r+' · ведёт: '+p.s+'</div><div style="margin-top:6px">'+p.l.map(function(x){return '<span class="pill">'+x+'</span>'}).join('')+'</div></div></div></div>'}).join('');
+}
+drawCat();
+var CERTS={'SL-2026-014':['ok','Действует. Анна Вершинина, наставник школы, выдан 12.03.2026, действует до 12.03.2027.'],'SL-2024-003':['warn','Срок истёк 01.02.2025. Ежегодная проверка качества не пройдена, сертификат не продлён.']};
+$('#certBtn').addEventListener('click',function(){var k=$('#certIn').value.trim().toUpperCase(),r=CERTS[k];
+  $('#certOut').innerHTML=r?'<span class="'+(r[0]==='ok'?'ok':'warnc')+'">'+r[1]+'</span> <span class="tag">вымышленный пример</span>':'<span class="bad">Сертификат с таким номером не найден.</span> Проверьте номер или напишите в школу.';});
+
+setLang('ru');route();compute();
+})();
+</script>
+</body>
+</html>
